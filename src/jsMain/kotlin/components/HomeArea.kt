@@ -52,7 +52,7 @@ fun HomeArea(contents: List<ContentItem>?) {
             }
         }
         Hr()
-        A(href = "/about") {
+        A(href = "/#/about") {
             Text("О сайте")
         }
     }

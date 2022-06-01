@@ -16,5 +16,6 @@
 
 enum class Area {
     Home,
-    Chapter
+    Chapter,
+    About,
 }

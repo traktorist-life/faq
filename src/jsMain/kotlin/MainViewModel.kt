@@ -76,11 +76,16 @@ class MainViewModel(
     }
 
     private fun reloadRoute() {
-        val chapterId = chapterRoute.find(window.location.hash)?.groupValues?.drop(1)?.firstOrNull()?.toIntOrNull()
-        if (chapterId != null)
-            loadChapter(chapterId)
-        else
-            loadContents()
+        val location = window.location.hash
+        if (location == "#/about")
+            loadAbout()
+        else {
+            val chapterId = chapterRoute.find(location)?.groupValues?.drop(1)?.firstOrNull()?.toIntOrNull()
+            if (chapterId != null)
+                loadChapter(chapterId)
+            else
+                loadContents()
+        }
     }
 
     private fun loadContents() {
@@ -97,6 +102,11 @@ class MainViewModel(
         scope.launch {
             _chapter.value = tag to api.getChapter(chapterId)
         }
+    }
+
+    private fun loadAbout() {
+        _area.value = Area.About
+        _chapter.value = null
     }
 }
 

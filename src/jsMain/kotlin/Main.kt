@@ -16,6 +16,7 @@
 
 import androidx.compose.runtime.*
 import api.FaqApi
+import components.AboutArea
 import components.ChapterArea
 import components.HomeArea
 import kotlinx.coroutines.MainScope
@@ -36,9 +37,10 @@ fun main() {
                 classes(AppStylesheet.container)
             }
         ) {
-            when(state.area){
+            when (state.area) {
                 Area.Home -> HomeArea(state.contents)
                 Area.Chapter -> ChapterArea(state.chapter)
+                Area.About -> AboutArea()
             }
         }
 
