@@ -17,24 +17,23 @@
 package components
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import kotlinx.browser.document
 import life.traktorist.api.dto.AnswerBlockType
-import life.traktorist.api.dto.FaqChapter
 import life.traktorist.api.dto.FaqItem
 import life.traktorist.api.dto.Tag
 import org.jetbrains.compose.web.dom.*
 import theme.AppStylesheet
 
 @Composable
-fun ChapterArea(chapterData: Pair<Tag, FaqChapter>?) {
-    if (chapterData == null) {
+fun ChapterArea(model: ChapterModel?) {
+    if (model == null) {
         Text("loading...")
         return
     }
 
-    val (tag, chapter) = chapterData
-
     H1 {
-        Text("FAQ: ${tag.title}")
+        Text("FAQ: ${model.tag.title}")
     }
     P {
         A(href = "/") {
@@ -49,22 +48,22 @@ fun ChapterArea(chapterData: Pair<Tag, FaqChapter>?) {
     Ol(attrs = {
         //type=1
     }) {
-        chapter.items.forEachIndexed { index, item ->
+        model.data.items.forEachIndexed { index, item ->
             Li {
-                A(href = "#$index") {
+                A(href = "/#/chapter/${model.tag.id}/$index") {
                     Text(item.question)
                 }
             }
         }
     }
-    if (chapter.addItems.isNotEmpty()) {
+    if (model.data.addItems.isNotEmpty()) {
         P {
             Text("Связанные с темой вопросы")
         }
         Ol(attrs = {
             //type=1
         }) {
-            chapter.addItems.forEachIndexed { index, item ->
+            model.data.addItems.forEachIndexed { index, item ->
                 Li {
                     //A(href = "#$index") {
                     Text(item.question)
@@ -75,16 +74,21 @@ fun ChapterArea(chapterData: Pair<Tag, FaqChapter>?) {
     }
     Hr()
 
-    QuestionList(chapter.items)
+    QuestionList(model.data.items, model.tag)
 
-    if (chapter.addItems.isNotEmpty()) {
+    if (model.data.addItems.isNotEmpty()) {
         H3 { Text("Связанные темы") }
-        QuestionList(chapter.addItems)
+        QuestionList(model.data.addItems, model.tag)
+    }
+    LaunchedEffect(model.selectedQuestion) {
+        model.selectedQuestion?.let {
+            document.getElementById("$it")?.scrollIntoView()
+        }
     }
 }
 
 @Composable
-private fun QuestionList(items: List<FaqItem>) {
+private fun QuestionList(items: List<FaqItem>, chapterTage: Tag) {
     items.forEachIndexed { index, item ->
         Div(attrs = {
             classes(AppStylesheet.item)
@@ -103,16 +107,24 @@ private fun QuestionList(items: List<FaqItem>) {
             }
             Div {
                 item.tags.forEach { tag ->
-                    A(href = "/chapter/${tag.id}", attrs = { classes(AppStylesheet.itemMainTag) }) {
-                        Text(tag.title)
-                    }
+                    QuestionTag(tag, AppStylesheet.itemMainTag, tag != chapterTage)
                 }
                 item.addTags?.forEach { tag ->
-                    A(href = "/chapter/${tag.id}", attrs = { classes(AppStylesheet.itemAddTag) }) {
-                        Text(tag.title)
-                    }
+                    QuestionTag(tag, AppStylesheet.itemAddTag, tag != chapterTage)
                 }
             }
         }
     }
+}
+
+@Composable
+fun QuestionTag(tag: Tag, style: String, selectable: Boolean) {
+    if (!selectable)
+        Span(attrs = { classes(style) }) {
+            Text(tag.title)
+        }
+    else
+        A(href = "#/chapter/${tag.id}", attrs = { classes(style) }) {
+            Text(tag.title)
+        }
 }

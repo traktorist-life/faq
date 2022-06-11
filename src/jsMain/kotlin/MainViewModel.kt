@@ -15,6 +15,7 @@
  */
 
 import api.FaqApi
+import components.ChapterModel
 import kotlinx.browser.window
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,19 +23,18 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import life.traktorist.api.dto.ContentItem
-import life.traktorist.api.dto.FaqChapter
 import life.traktorist.api.dto.Tag
 
 class MainViewModel(
     private val scope: CoroutineScope,
     private val api: FaqApi,
 ) {
-    private val chapterRoute = Regex("^#/chapter/(\\d+)$")
+    private val chapterRoute = Regex("^#/chapter/(\\d+)(/)?(\\d+)?\$")
     private val chapters = Tag.values().associateBy { it.id }
 
     private val _area: MutableStateFlow<Area>
     private val _contents: MutableStateFlow<List<ContentItem>?>
-    private val _chapter: MutableStateFlow<Pair<Tag, FaqChapter>?>
+    private val _chapter: MutableStateFlow<ChapterModel?>
 
     private val _state: MutableStateFlow<ModelState>
 
@@ -80,9 +80,10 @@ class MainViewModel(
         if (location == "#/about")
             loadAbout()
         else {
-            val chapterId = chapterRoute.find(location)?.groupValues?.drop(1)?.firstOrNull()?.toIntOrNull()
+            val chapterGroups = chapterRoute.find(location)?.groupValues?.drop(1)
+            val chapterId = chapterGroups?.firstOrNull()?.toIntOrNull()
             if (chapterId != null)
-                loadChapter(chapterId)
+                loadChapter(chapterId, chapterGroups.drop(2).firstOrNull()?.toIntOrNull())
             else
                 loadContents()
         }
@@ -95,12 +96,21 @@ class MainViewModel(
         }
     }
 
-    private fun loadChapter(chapterId: Int) {
-        val tag = chapters[chapterId] ?: return
-        _area.value = Area.Chapter
-        _chapter.value = null
-        scope.launch {
-            _chapter.value = tag to api.getChapter(chapterId)
+    private fun loadChapter(chapterId: Int, questionId: Int?) {
+        val current = _chapter.value?.tag?.id
+        if (current == chapterId) {
+            questionId?.let {
+                scope.launch {
+                    _chapter.value = _chapter.value?.copy(selectedQuestion = it)
+                }
+            }
+        } else {
+            val tag = chapters[chapterId] ?: return
+            _area.value = Area.Chapter
+            _chapter.value = null
+            scope.launch {
+                _chapter.value = ChapterModel(tag, api.getChapter(chapterId), questionId)
+            }
         }
     }
 
@@ -113,5 +123,5 @@ class MainViewModel(
 data class ModelState(
     val area: Area,
     val contents: List<ContentItem>?,
-    val chapter: Pair<Tag, FaqChapter>?,
+    val chapter: ChapterModel?,
 )
