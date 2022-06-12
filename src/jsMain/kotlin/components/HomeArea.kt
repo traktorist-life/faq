@@ -17,6 +17,8 @@
 package components
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import kotlinx.browser.document
 import life.traktorist.api.dto.ContentItem
 import org.jetbrains.compose.web.dom.*
 import theme.AppStylesheet
@@ -55,5 +57,8 @@ fun HomeArea(contents: List<ContentItem>?) {
         A(href = "/#/about") {
             Text("О сайте")
         }
+    }
+    LaunchedEffect(true) {
+        document.title = "FAQ по Черногории"
     }
 }

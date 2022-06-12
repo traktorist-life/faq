@@ -17,6 +17,8 @@
 package components
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import kotlinx.browser.document
 import org.jetbrains.compose.web.dom.A
 import org.jetbrains.compose.web.dom.H1
 import org.jetbrains.compose.web.dom.P
@@ -31,5 +33,8 @@ fun AboutArea() {
         Text("Если у вас есть предложения-пожелания, или вы можете помочь (очень был бы полезен css, но только если вы понимаете что это) - пишите в телегу ")
         A(href = "https://t.me/traktoristlife") { Text("@traktoristlife") }
         Text(" :)")
+    }
+    LaunchedEffect(true){
+        document.title = "О нас"
     }
 }

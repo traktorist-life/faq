@@ -86,6 +86,9 @@ fun ChapterArea(model: ChapterModel?) {
             document.getElementById(it)?.scrollIntoView()
         }
     }
+    LaunchedEffect(model.tag) {
+        document.title = "FAQ: ${model.tag.title}"
+    }
 }
 
 @Composable
