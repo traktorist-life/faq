@@ -29,7 +29,7 @@ class MainViewModel(
     private val scope: CoroutineScope,
     private val api: FaqApi,
 ) {
-    private val chapterRoute = Regex("^#/chapter/(\\d+)(/)?(\\d+)?\$")
+    private val chapterRoute = Regex("^#/chapter/(\\d+)(/)?(\\d+-?)?\$")
     private val chapters = Tag.values().associateBy { it.id }
 
     private val _area: MutableStateFlow<Area>
@@ -83,7 +83,7 @@ class MainViewModel(
             val chapterGroups = chapterRoute.find(location)?.groupValues?.drop(1)
             val chapterId = chapterGroups?.firstOrNull()?.toIntOrNull()
             if (chapterId != null)
-                loadChapter(chapterId, chapterGroups.drop(2).firstOrNull()?.toIntOrNull())
+                loadChapter(chapterId, chapterGroups.drop(2).firstOrNull())
             else
                 loadContents()
         }
@@ -96,7 +96,7 @@ class MainViewModel(
         }
     }
 
-    private fun loadChapter(chapterId: Int, questionId: Int?) {
+    private fun loadChapter(chapterId: Int, questionId: String?) {
         val current = _chapter.value?.tag?.id
         if (current == chapterId) {
             questionId?.let {

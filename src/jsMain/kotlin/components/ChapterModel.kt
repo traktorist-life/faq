@@ -22,5 +22,5 @@ import life.traktorist.api.dto.Tag
 data class ChapterModel(
     val tag: Tag,
     val data: FaqChapter,
-    val selectedQuestion: Int?,
+    val selectedQuestion: String?,
 )

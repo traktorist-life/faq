@@ -51,7 +51,7 @@ fun ChapterArea(model: ChapterModel?) {
     }) {
         model.data.items.forEachIndexed { index, item ->
             Li {
-                A(href = "/#/chapter/${model.tag.id}/$index") {
+                A(href = "/#/chapter/${model.tag.id}/${mainId(index)}") {
                     Text(item.question)
                 }
             }
@@ -66,36 +66,36 @@ fun ChapterArea(model: ChapterModel?) {
         }) {
             model.data.addItems.forEachIndexed { index, item ->
                 Li {
-                    //A(href = "#$index") {
-                    Text(item.question)
-                    //}
+                    A(href = "/#/chapter/${model.tag.id}/${additionalId(index)}") {
+                        Text(item.question)
+                    }
                 }
             }
         }
     }
     Hr()
 
-    QuestionList(model.data.items, model.tag)
+    QuestionList(model.data.items, model.tag, ::mainId)
 
     if (model.data.addItems.isNotEmpty()) {
         H3 { Text("Связанные темы") }
-        QuestionList(model.data.addItems, model.tag)
+        QuestionList(model.data.addItems, model.tag, ::additionalId)
     }
     LaunchedEffect(model.selectedQuestion) {
         model.selectedQuestion?.let {
-            document.getElementById("$it")?.scrollIntoView()
+            document.getElementById(it)?.scrollIntoView()
         }
     }
 }
 
 @Composable
-private fun QuestionList(items: List<FaqItem>, chapterTage: Tag) {
+private fun QuestionList(items: List<FaqItem>, chapterTage: Tag, getId: (Int) -> String) {
     items.forEachIndexed { index, item ->
         Div(attrs = {
             classes(AppStylesheet.item)
         }) {
             H3(attrs = {
-                id(index.toString())
+                id(getId(index))
                 classes(AppStylesheet.itemQuestion)
             }) {
                 Text(item.question)
@@ -134,3 +134,6 @@ fun QuestionTag(tag: Tag, style: String, selectable: Boolean) {
             Text(tag.title)
         }
 }
+
+private fun mainId(id: Int): String = id.toString()
+private fun additionalId(id: Int): String = "$id-"
