@@ -17,6 +17,7 @@
 package components
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import kotlinx.browser.document
 import life.traktorist.api.dto.AnswerBlockType
@@ -102,7 +103,12 @@ private fun QuestionList(items: List<FaqItem>, chapterTage: Tag) {
             item.answer.forEach { line ->
                 when (line.type) {
                     AnswerBlockType.Header -> H3(attrs = { classes(AppStylesheet.itemAnswerHeader) }) { Text(line.data) }
-                    AnswerBlockType.Paragraph -> P(attrs = { classes(AppStylesheet.itemAnswer) }) { Text(line.data) }
+                    AnswerBlockType.Paragraph -> P(attrs = { classes(AppStylesheet.itemAnswer) }) {
+                        DisposableEffect(line.data) {
+                            scopeElement.innerHTML = line.data
+                            onDispose { }
+                        }
+                    }
                 }
             }
             Div {
