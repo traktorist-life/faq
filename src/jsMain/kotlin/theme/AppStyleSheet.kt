@@ -68,4 +68,8 @@ object AppStylesheet : StyleSheet() {
     }
 
     val itemAddTag = itemMainTag
+
+    val gitHubLink by style {
+        textDecoration("none")
+    }
 }

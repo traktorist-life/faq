@@ -19,10 +19,8 @@ package components
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import kotlinx.browser.document
-import org.jetbrains.compose.web.dom.A
-import org.jetbrains.compose.web.dom.H1
-import org.jetbrains.compose.web.dom.P
-import org.jetbrains.compose.web.dom.Text
+import org.jetbrains.compose.web.dom.*
+import theme.AppStylesheet
 
 @Composable
 fun AboutArea() {
@@ -30,11 +28,19 @@ fun AboutArea() {
     P { Text("Это частный ресурс, поддерживаемый на общественных началах.") }
     P { Text("Ввиду принятия ряда законодательных инициатив, у нас нет и не будет форумов/обсуждений/пользовательского контента без премодерации. В telegram есть группы, где можно пообщаться с людьми в той или иной стадии переезда и узнать больше подробностей об этом событии.") }
     P {
+        Text("Исходный код ресурса находится в открытом доступе на ")
+        A(href = "https://github.com/traktorist-life/faq", attrs = { classes(AppStylesheet.gitHubLink) }) {
+            Img(src = "/GitHub-Mark-32px.png")
+            Text("GitHub")
+        }
+        Text(".")
+    }
+    P {
         Text("Если у вас есть предложения-пожелания, или вы можете помочь (очень был бы полезен css, но только если вы понимаете что это) - пишите в телегу ")
         A(href = "https://t.me/traktoristlife") { Text("@traktoristlife") }
-        Text(" :)")
+        Text(" или кидайте PR на GitHub :)")
     }
-    LaunchedEffect(true){
+    LaunchedEffect(true) {
         document.title = "О нас"
     }
 }
