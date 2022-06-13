@@ -21,55 +21,55 @@ import org.jetbrains.compose.web.css.*
 object AppStylesheet : StyleSheet() {
 
     val container by style {
-        fontFamily("sans-serif")
+//        fontFamily("sans-serif")
     }
 
     val homeContainer by style {
-        textAlign("center")
+//        textAlign("center")
     }
 
     val item by style {
-        margin(12.px, 4.px)
-        padding(8.px, 12.px, 12.px)
+//        margin(12.px, 4.px)
+//        padding(8.px, 12.px, 12.px)
     }
 
     val itemQuestion by style {
-        marginTop(4.px)
-        marginBottom(6.px)
-        marginLeft(12.px)
-        color(rgb(49, 49, 49))
-        fontSize(1.em)
+//        marginTop(4.px)
+//        marginBottom(6.px)
+//        marginLeft(12.px)
+//        color(rgb(49, 49, 49))
+//        fontSize(1.em)
     }
 
     val itemAnswerHeader by style {
-        marginTop(10.px)
-        marginBottom(4.px)
-        marginLeft(4.px)
-        color(rgb(73, 73, 73))
-        fontSize(0.9.em)
+//        marginTop(10.px)
+//        marginBottom(4.px)
+//        marginLeft(4.px)
+//        color(rgb(73, 73, 73))
+//        fontSize(0.9.em)
     }
 
     val itemAnswer by style {
-        marginTop(0.px)
-        marginBottom(4.px)
-        marginLeft(4.px)
-        color(rgb(73, 73, 73))
-        fontSize(0.9.em)
+//        marginTop(0.px)
+//        marginBottom(4.px)
+//        marginLeft(4.px)
+//        color(rgb(73, 73, 73))
+//        fontSize(0.9.em)
     }
 
     val itemMainTag by style {
-        padding(4.px, 8.px)
-        marginRight(4.px)
-        backgroundColor(rgb(199, 199, 199))
-        borderRadius(3.px)
-        color(rgb(63, 63, 63))
-        fontSize(0.7.em)
-        textDecoration("none")
+//        padding(4.px, 8.px)
+//        marginRight(4.px)
+//        backgroundColor(rgb(199, 199, 199))
+//        borderRadius(3.px)
+//        color(rgb(63, 63, 63))
+//        fontSize(0.7.em)
+//        textDecoration("none")
     }
 
     val itemAddTag = itemMainTag
 
     val gitHubLink by style {
-        textDecoration("none")
+//        textDecoration("none")
     }
 }
