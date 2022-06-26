@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("MaxLineLength")
+
 package life.traktorist.chapter
 
 import life.traktorist.api.dto.FaqItem
