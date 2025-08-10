@@ -18,9 +18,9 @@ import org.jetbrains.compose.compose
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val kotlinVersion: String by project
-val serializationVersion = "1.3.2"
-val ktorVersion = "2.0.2"
-val logbackVersion = "1.2.10"
+val serializationVersion: String by project
+val ktorVersion: String by project
+val logbackVersion: String by project
 
 plugins {
     kotlin("multiplatform")
